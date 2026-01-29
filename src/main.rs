@@ -9,9 +9,12 @@ fn main() {
     .expect("failed to read line");
 
     println!("You guessed {guess}");
-    println!("{}", five())
+    println!("{}", five());
+    for number in (1..10).rev() {
+        println!("The number is {}", number)
+    };
 }
 
-fn five()->u8{
+fn five()->u16{
     5
 }
