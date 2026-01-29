@@ -63,4 +63,15 @@ impl Rectangle {
     fn area(&self) -> u32{
         self.width * self.length
     }
+
+    fn square(size: u32)->Self{
+        Self {
+            width: size,
+            length: size,
+        }
+    }
+
+    fn can_hold(&self, other: &Rectangle)->bool{
+        self.width > other.width && self.length > other.length
+    }
 }
