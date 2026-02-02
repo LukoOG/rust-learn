@@ -89,14 +89,16 @@ fn guess_game() {
         .read_line(&mut guess)
         .expect("failed to read line");
 
+    //parsing guess
+    
     println!("The secret number is {secret_number}");
-    println!("You guessed {guess}");
-
-    match guess.cmp(&"hi".to_string()){
-        Ordering::Less => println!("Guess is too small"),
-        Ordering::Equal => println!("You guessed right"),
-        Ordering::Greater => println!("You guess too big"),
+    loop {
+        let guess: u32 = guess.trim().parse().expect("please input a number");
+        println!("You guessed {guess}");
+        match guess.cmp(&32){
+            Ordering::Less => println!("Guess is too small"),
+            Ordering::Equal => println!("You guessed right"),
+            Ordering::Greater => println!("You guess too big"),
+        };
     };
-
-    assert!(2, 2);
 }
