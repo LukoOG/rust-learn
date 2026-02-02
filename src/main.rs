@@ -2,7 +2,7 @@
 pub(crate) mod strings;
 
 use rand::Rng;
-use std::{cmp::Ordering, io, num};
+use std::{cmp::Ordering, io};
 struct Rectangle {
     width: u32,
     length: u32,
@@ -81,9 +81,7 @@ impl Rectangle {
 
 fn guess_game() {
     let secret_number = rand::thread_rng().gen_range(1..=100);
-
     //parsing guess
-
     //println!("The secret number is {secret_number}");
     loop {
         println!("Please input your guess");
