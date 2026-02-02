@@ -1,15 +1,14 @@
 #![allow(dead_code)]
 pub(crate) mod strings;
 
-use std::{io, cmp::Ordering};
 use rand::Rng;
+use std::{cmp::Ordering, io, num};
 struct Rectangle {
     width: u32,
     length: u32,
 }
 
 fn main() {
-
     guess_game();
 
     println!("{}", five());
@@ -81,24 +80,31 @@ impl Rectangle {
 }
 
 fn guess_game() {
-    println!("Please make a guess");
-    let mut guess = String::new();
     let secret_number = rand::thread_rng().gen_range(1..=100);
 
-    io::stdin()
-        .read_line(&mut guess)
-        .expect("failed to read line");
-
     //parsing guess
-    
-    println!("The secret number is {secret_number}");
+
+    //println!("The secret number is {secret_number}");
     loop {
-        let guess: u32 = guess.trim().parse().expect("please input a number");
+        println!("Please input your guess");
+        let mut guess = String::new();
+        io::stdin()
+            .read_line(&mut guess)
+            .expect("failed to read line");
         println!("You guessed {guess}");
-        match guess.cmp(&32){
-            Ordering::Less => println!("Guess is too small"),
-            Ordering::Equal => println!("You guessed right"),
-            Ordering::Greater => println!("You guess too big"),
+
+        let guess: u32 = match guess.trim().parse(){
+            Ok(num) => num,
+            Err(_) => continue,
         };
-    };
+
+        match guess.cmp(&secret_number) {
+            Ordering::Less => println!("Guess is too small"),
+            Ordering::Equal => {
+                println!("You guessed right");
+                break;
+            }
+            Ordering::Greater => println!("Guess is too big"),
+        };
+    }
 }
