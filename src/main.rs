@@ -1,20 +1,17 @@
 #![allow(dead_code)]
-use std::io;
+pub(crate) mod strings;
 
+use std::{io, cmp::Ordering};
+use rand::Rng;
 struct Rectangle {
     width: u32,
     length: u32,
 }
 
 fn main() {
-    println!("Please make a guess");
-    let mut guess = String::new();
 
-    io::stdin()
-        .read_line(&mut guess)
-        .expect("failed to read line");
+    guess_game();
 
-    println!("You guessed {guess}");
     println!("{}", five());
     for number in (1..10).rev() {
         println!("The number is {}", number)
@@ -22,14 +19,20 @@ fn main() {
 
     let example = "Helpokklo World";
 
-    println!("{}", {first_word(example)});
+    println!("{}", { first_word(example) });
 
-    println!("area of the rectangle is {}", calculate_area(8, 9 ));
+    println!("area of the rectangle is {}", calculate_area(8, 9));
 
-    let rect = Rectangle{ width: 20, length: 20 };
-    println!("Area of the rectangular struct is {}", {rect_calculate_area(&rect)});
-    println!("Area of the rectangular struct using trait is {}", {rect.area()})
-
+    let rect = Rectangle {
+        width: 20,
+        length: 20,
+    };
+    println!("Area of the rectangular struct is {}", {
+        rect_calculate_area(&rect)
+    });
+    println!("Area of the rectangular struct using trait is {}", {
+        rect.area()
+    })
 }
 
 fn five() -> u16 {
@@ -48,31 +51,52 @@ fn first_word(s: &str) -> &str {
     &s[..]
 }
 
-fn calculate_area(w: u8, l: u8)->u8{
+fn calculate_area(w: u8, l: u8) -> u8 {
     w * l
 }
 
-fn rect_calculate_area(r: &Rectangle)->u32{
-   let Rectangle { width, length } = r;
+fn rect_calculate_area(r: &Rectangle) -> u32 {
+    let Rectangle { width, length } = r;
 
-   width * length
+    width * length
     // OR
-   // r.width * r.length
+    // r.width * r.length
 }
 
 impl Rectangle {
-    fn area(&self) -> u32{
+    fn area(&self) -> u32 {
         self.width * self.length
     }
 
-    fn square(size: u32)->Self{
+    fn square(size: u32) -> Self {
         Self {
             width: size,
             length: size,
         }
     }
 
-    fn can_hold(&self, other: &Rectangle)->bool{
+    fn can_hold(&self, other: &Rectangle) -> bool {
         self.width > other.width && self.length > other.length
     }
+}
+
+fn guess_game() {
+    println!("Please make a guess");
+    let mut guess = String::new();
+    let secret_number = rand::thread_rng().gen_range(1..=100);
+
+    io::stdin()
+        .read_line(&mut guess)
+        .expect("failed to read line");
+
+    println!("The secret number is {secret_number}");
+    println!("You guessed {guess}");
+
+    match guess.cmp(&"hi".to_string()){
+        Ordering::Less => println!("Guess is too small"),
+        Ordering::Equal => println!("You guessed right"),
+        Ordering::Greater => println!("You guess too big"),
+    };
+
+    assert!(2, 2);
 }
